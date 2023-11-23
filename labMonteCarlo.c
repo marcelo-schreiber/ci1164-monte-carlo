@@ -20,14 +20,6 @@ double styblinskiTang(double *x, int order)
   return sum / 2.0;
 }
 
-double twoD_styblinskiTang(double x1, double x2)
-{
-  double x1_squared = x1*x1;
-  double x2_squared = x2*x2;
-
-  return ((x1_squared*x1_squared - 16 * x1_squared + 5 * x1) + (x2_squared*x2_squared - 16 * x2_squared + 5 * x2)) / 2;
-}
-
 // Integral Monte Carlo da função Styblinski-Tang dimensoes variaveis
 double monte_carlo(double a, double b, int namostras, int d)
 {
@@ -79,7 +71,10 @@ double retangulos_xy(double a, double b, int npontos)
     double x = a + i * h;
     for (int j = 0; j < npontos; ++j)
     {
-      soma += twoD_styblinskiTang(x, a + j * h);
+      double y = a + j * h;
+      double x1_squared = x*x;
+      double x2_squared = y*y;
+      soma += ((x1_squared*x1_squared - 16 * x1_squared + 5 * y) + (x2_squared*x2_squared - 16 * x2_squared + 5 * y)) / 2;
     }
   }
 
@@ -111,10 +106,10 @@ int main(int argc, char **argv)
   // na função de monte-carlo deve ser testado para 2, 4 e 8 dimensões e 10^7 pontos
   // na função de retângulos deve ser testado para 2 dimensões e 10^7 pontos
 
-  double monte_carlo_resultado = monte_carlo(a, b, namostras, d);
+  // double monte_carlo_resultado = monte_carlo(a, b, namostras, d);
   double retangulos_resultado = retangulos_xy(a, b, namostras);
 
-  printf("Resultado Monte Carlo: %f\n", monte_carlo_resultado);
+  // printf("Resultado Monte Carlo: %f\n", monte_carlo_resultado);
   printf("Resultado Retangulos: %f\n", retangulos_resultado);
 
   return 0;
